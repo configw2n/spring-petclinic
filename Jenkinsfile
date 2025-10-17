@@ -5,7 +5,7 @@ pipeline {
     maven 'M3'
     jdk 'JDK21'
   }
-  enviroment {
+  environment {
     DOCKERUB_CREDENTIALS = credentials('dockerCredential')
   }
 
