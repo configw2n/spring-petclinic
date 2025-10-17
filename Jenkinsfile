@@ -54,7 +54,7 @@ pipeline {
       }
     }
     //Target server Docker Container
-    stage ('DOkcer Container') {
+    /*stage ('DOkcer Container') {
       steps {
         sshPublisher(publishers: [sshPublisherDesc(configName: 'target',
         transfers: [sshTransfer(cleanRemote: false, excludes: '',
@@ -76,6 +76,30 @@ pipeline {
         verbose: false)])
       }
     }
+    */
+    stage ('Docker Container') {
+      steps {
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
+        transfers: [sshTransfer(cleanRemote: false, 
+        excludes: '', 
+        execCommand: '''
+        docker rm -f $(docker ps -aq)
+        docker rmi $(docker images -q)
+        docker run -itd -p 80:8080 --name=spring-petclinic configw2n/spring-petclinic:latest
+        ''', 
+        execTimeout: 120000, 
+        flatten: false, 
+        makeEmptyDirs: false, 
+        noDefaultExcludes: false, 
+        patternSeparator: '[, ]+', 
+        remoteDirectory: '', 
+        remoteDirectorySDF: false, 
+        removePrefix: 'target', sourceFiles: '')], 
+        usePromotionTimestamp: false, 
+        useWorkspaceInPromotion: false, 
+        verbose: false)])
+      }
+    }    
   }
 }
   
