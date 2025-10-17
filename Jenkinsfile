@@ -29,7 +29,7 @@ pipeline {
         dir("${env.WORKSPACE}"){
           sh """
           docker build -t spring-petclinic:$BUILD_NUMBER  .
-          docker tag spring-petclinic:$BUILD_NUMBER configw2n/spring-petclinic:latest
+          docker tag spring-petclinic:$BUILD_NUMBER jangjaewan/spring-petclinic:latest
           """
         }        
       }    
@@ -39,7 +39,7 @@ pipeline {
       steps {
         sh """
         echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-        docker push configw2n/spring-petclinic:latest
+        docker push jangjaewan/spring-petclinic:latest
         """
       }
     }
@@ -49,7 +49,7 @@ pipeline {
       steps {
       sh """
       docker rmi spring-petclinic:$BUILD_NUMBER
-      docker rmi configw2n/spring-petclinic:latest
+      docker rmi jangjaewan/spring-petclinic:latest
       """
       }
     }
@@ -85,7 +85,7 @@ pipeline {
         execCommand: '''
         docker rm -f $(docker ps -aq)
         docker rmi $(docker images -q)
-        docker run -itd -p 80:8080 --name=spring-petclinic configw2n/spring-petclinic:latest
+        docker run -itd -p 80:8080 --name=spring-petclinic jangjaewan/spring-petclinic:latest
         ''', 
         execTimeout: 120000, 
         flatten: false, 
