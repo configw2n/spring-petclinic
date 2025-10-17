@@ -23,43 +23,38 @@ pipeline {
         sh 'mvn -Dmaven.test.failure.ignore=true clean package'
       }
     }
-  //docker image 생성
-  stage('Docker Image Build'){
+    //docker image 생성
+    stage('Docker Image Build'){
       steps {
         dir("${env.WORKSPACE}"){
           sh """
           docker build -t spring-petclinic:$BUILD_NUMBER  .
           docker tag spring-petclinic:$BUILD_NUMBER configw2n/spring-petclinic:latest
           """
-        }
-        
+        }        
       }    
     }
-  //docker login
-  stage ("Docker Login"){
-    steps {
-      sh """
-      echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-      docker push configw2n/spring-petclinic:latest
-      """
-      
-    }
-  stage ('Docker Image Remove') {
-    steps {
-      sh """
-      docker rmi spring-petclinic:$BUILD_NUMBER
-      docker rmi configw2n/spring-petclinic:latest
-      """
-    
+    //docker login
+    stage ("Docker Login"){
+      steps {
+        sh """
+        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+        docker push configw2n/spring-petclinic:latest
+        """     
+      }
     }
     
-  }
-
+    stage ('Docker Image Remove') {
+      steps {
+        sh """
+        docker rmi spring-petclinic:$BUILD_NUMBER
+        docker rmi configw2n/spring-petclinic:latest
+        """   
+      }    
+    }
     
-    
-   }     
   }
 }
-
+  
 
 
