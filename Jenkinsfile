@@ -21,8 +21,8 @@ pipeline {
       }
     }
   //docker image 생성
-  stage{'Docker Image Build'){
-      steps{
+  stage('Docker Image Build'){
+      steps {
         dir("${env.WORKSPACE}"){
           sh"""
           docker build -t configw2n/spring-petclinic:$BUILD_NUMBER  .
