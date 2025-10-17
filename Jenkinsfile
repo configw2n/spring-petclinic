@@ -25,14 +25,25 @@ pipeline {
       steps {
         dir("${env.WORKSPACE}"){
           sh """
-          docker build -t configw2n/spring-petclinic:$BUILD_NUMBER  .
-          docker tag configw2n/spring-petclinic:$BUILD_NUMBER configw2n/spring-petclinic:latest
+          docker build -t spring-petclinic:$BUILD_NUMBER  .
+          docker tag spring-petclinic:$BUILD_NUMBER configw2n/spring-petclinic:latest
           """
         }
         
       }    
     }
-        
+  //docker login
+  stage ("Docker Login"){
+    steps {
+      sh """
+      echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+      docker push configw2n/spring-petclinic:latest
+      """
+      
+    }
+
+    
+   }     
   }
 }
 
