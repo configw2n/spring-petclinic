@@ -5,6 +5,9 @@ pipeline {
     maven 'M3'
     jdk 'JDK21'
   }
+  enviroment {
+    DOCKERUB_CREDENTIALS = credentials('dockerCredential')
+  }
 
   stages {
     // GitHub Clone
@@ -41,7 +44,18 @@ pipeline {
       """
       
     }
+  stage ('Docker Image Remove') {
+    steps {
+      sh """
+      docker rmi spring-petclinic:$BUILD_NUMBER
+      docker rmi configw2n/spring-petclinic:latest
+      """
+    
+    }
+    
+  }
 
+    
     
    }     
   }
