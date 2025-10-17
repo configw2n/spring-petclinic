@@ -6,7 +6,7 @@ pipeline {
     jdk 'JDK21'
   }
   environment {
-    DOCKERUB_CREDENTIALS = credentials('dockerCredential')
+    DOCKERHUB_CREDENTIALS = credentials('dockerCredential')
   }
 
   stages {
