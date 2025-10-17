@@ -35,22 +35,23 @@ pipeline {
       }    
     }
     //docker login
-    stage ("Docker Login"){
+    stage ('Docker Login and Push') {
       steps {
         sh """
         echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
         docker push configw2n/spring-petclinic:latest
-        """     
+        """
       }
     }
-    
+
+    // Docker Image Remove
     stage ('Docker Image Remove') {
       steps {
-        sh """
-        docker rmi spring-petclinic:$BUILD_NUMBER
-        docker rmi configw2n/spring-petclinic:latest
-        """   
-      }    
+      sh """
+      docker rmi spring-petclinic:$BUILD_NUMBER
+      docker rmi configw2n/spring-petclinic:latest
+      """
+      }
     }
     
   }
